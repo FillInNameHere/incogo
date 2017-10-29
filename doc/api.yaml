@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  version: '0.4'
+  title: Incogo - API
+  description: Microservice inventory control application in GO programming language
+  contact:
+    name: Christian Rambow
+    email: christian.rambow@haw-hamburg.de
+servers:
+  - url: 'http://localhost:8080'
+    description: Local development server
+paths:
+  /businesspartner:
+    get:
+      summary: Find Businesspartner
+      description: Find Businesspartner
+      tags:
+        - Businesspartner Service
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Name of BP
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/businesspartner'
+    post:
+      summary: Save Businesspartner
+      description: Saves a Businesspartner
+      tags:
+        - Businesspartner Service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/businesspartner'
+      responses:
+        '200':
+          description: OK
+    put:
+      summary: Update Businesspartner
+      description: Updates a Businesspartner
+      tags:
+        - Businesspartner Service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/businesspartner'
+      responses:
+        '200':
+          description: OK
+  '/businesspartner/{id}':
+    get:
+      summary: Find BP by id
+      description: Find BP by integer id
+      tags:
+        - Businesspartner Service
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/businesspartner'
+    put:
+      summary: Update BP by id
+      description: Update BP by integer id
+      tags:
+        - Businesspartner Service
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/businesspartner'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    businesspartner:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        private:
+          type: boolean
+        contactpersons:
+          type: array
+          items:
+            $ref: '#/components/schemas/contactperson'
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/address'
+    contactperson:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        prename:
+          type: string
+        lastname:
+          type: string
+        email:
+          $ref: '#/components/schemas/Email'
+        telephone:
+          $ref: '#/components/schemas/Telephone'
+    address:
+      type: object
+      properties:
+        id:
+          type: integer
+        street:
+          type: string
+        number:
+          type: string
+        zip:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+    Email:
+      type: object
+      properties:
+        email:
+          type: string
+    Telephone:
+      type: object
+      properties:
+        telephone:
+          type: string
